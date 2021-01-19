@@ -12,12 +12,9 @@
     "devDependencies": {
         "axios": "^0.21",
         "laravel-mix": "^6.0.6",
-        "lodash": "^4.17.19",
-        "postcss": "^8.1"
+        "lodash": "^4.17.19"
     },
     "dependencies": {
-        "@tailwindcss/postcss7-compat": "^2.0.2",
-        "autoprefixer": "^9",
-        "tailwindcss": "npm:@tailwindcss/postcss7-compat"
+        "tailwindcss": "~1.9"
     }
 }
