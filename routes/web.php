@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\PostsController;
+use App\Jobs\QueuedEmail;
+use App\Models\Post;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,6 +16,33 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::view('/', 'welcome');
+Route::resource('posts', PostsController::class);
+
+Route::get('/queue-jobs', function() {
+    for ($i = 0; $i < 3; $i++) {
+        dispatch(new QueuedEmail);
+    }
+});
+
+Route::get('/create-posts', function() {
+    Post::create([
+        'title' => 'Hello world 1',
+    ]);
+
+    Post::create([
+        'title' => 'Hello world 2',
+    ]);
+
+    Post::create([
+        'title' => 'Hello world 3',
+    ]);
+
+    Post::create([
+        'title' => 'Hello world 4',
+    ]);
+
+    Post::create([
+        'title' => 'Hello world 5',
+    ]);
 });
