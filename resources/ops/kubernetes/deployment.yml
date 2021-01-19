@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: laravel-example-project
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: laravel-example-project
+  template:
+    metadata:
+      labels:
+        app: laravel-example-project
+    spec:
+      containers:
+        - name: laravel-example-project-nginx
+          imagePullPolicy: Always
+          image: laravel-example-project-nginx:latest
+          ports:
+            - containerPort: 80
+        - name: laravel-example-project-fpm
+          imagePullPolicy: Always
+          image: laravel-example-project-fpm:latest
+          ports:
+            - containerPort: 9000
