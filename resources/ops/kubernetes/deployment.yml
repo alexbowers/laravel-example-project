@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: laravel-example-project
 spec:
-  replicas: 1
+  replicas: 5
   selector:
     matchLabels:
       app: laravel-example-project
@@ -12,14 +12,69 @@ spec:
       labels:
         app: laravel-example-project
     spec:
+      volumes:
+        - name: logs
+          emptyDir: {}
+        - name: cache
+          emptyDir: {}
+        - name: testing
+          emptyDir: {}
+        - name: sessions
+          emptyDir: {}
+        - name: views
+          emptyDir: {}
+      securityContext:
+        fsGroup: 82
+      initContainers:
+        - name: database-migrations
+          image: laravel-example-project-fpm:latest
+          imagePullPolicy: Never
+          envFrom:
+            - configMapRef:
+                name: laravel
+            - secretRef:
+                name: laravel
+          command:
+            - "php"
+          args:
+            - "artisan"
+            - "migrate"
+            - "--force"
       containers:
-        - name: laravel-example-project-nginx
-          imagePullPolicy: Always
+        - name: nginx
+          imagePullPolicy: Never
           image: laravel-example-project-nginx:latest
+          resources:
+            limits:
+              cpu: 500m
+              memory: 50M
           ports:
             - containerPort: 80
-        - name: laravel-example-project-fpm
-          imagePullPolicy: Always
+        - name: fpm
+          imagePullPolicy: Never
+          envFrom:
+            - configMapRef:
+                name: laravel
+            - secretRef:
+                name: laravel
+          securityContext:
+            runAsUser: 82
+            readOnlyRootFilesystem: true
+          volumeMounts:
+            - name: logs
+              mountPath: /var/www/html/storage/logs
+            - name: cache
+              mountPath: /var/www/html/storage/framework/cache
+            - name: sessions
+              mountPath: /var/www/html/storage/framework/sessions
+            - name: views
+              mountPath: /var/www/html/storage/framework/views
+            - name: testing
+              mountPath: /var/www/html/storage/framework/testing
+          resources:
+            limits:
+              cpu: 500m
+              memory: 50M
           image: laravel-example-project-fpm:latest
           ports:
             - containerPort: 9000

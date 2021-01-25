@@ -1,0 +1,25 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: laravel
+spec:
+  schedule: "* * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+            - name: scheduled
+              image: laravel-example-project-fpm:latest
+              imagePullPolicy: Never
+              envFrom:
+                - configMapRef:
+                    name: laravel
+                - secretRef:
+                    name: laravel
+              command:
+                - "php"
+              args:
+                - "artisan"
+                - "schedule:run"
+          restartPolicy: OnFailure
