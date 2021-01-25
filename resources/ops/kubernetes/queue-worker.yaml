@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: queue-worker
+spec:
+  strategy:
+    rollingUpdate:
+      maxSurge: 50%
+      maxUnavailable: 25%
+  replicas: 5
+  selector:
+    matchLabels:
+      app: queue-worker
+  template:
+    metadata:
+      labels:
+        app: queue-worker
+    spec:
+      containers:
+        - name: fpm
+          imagePullPolicy: Never
+          resources: {}
+          image: nginx
+          ports:
+            - containerPort: 9000
