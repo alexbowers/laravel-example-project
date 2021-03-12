@@ -15,6 +15,20 @@ $app = new Illuminate\Foundation\Application(
     $_ENV['APP_BASE_PATH'] ?? dirname(__DIR__)
 );
 
+
+// $userAliases = [
+//     // ...
+//     Arquivei\LaravelPrometheusExporter\PrometheusFacade::class => 'Prometheus',
+// ];
+// $app->withFacades(true, $userAliases);
+// $app->register(Arquivei\LaravelPrometheusExporter\PrometheusServiceProvider::class);
+
+// $app->middleware([
+//     Arquivei\LaravelPrometheusExporter\RouteMiddleware::class,
+// ]);
+
+// $app->register(Arquivei\LaravelPrometheusExporter\DatabaseServiceProvider::class);
+
 /*
 |--------------------------------------------------------------------------
 | Bind Important Interfaces

@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: laravel-example-project
 spec:
-  replicas: 5
+  replicas: 1
   selector:
     matchLabels:
       app: laravel-example-project
@@ -11,6 +11,10 @@ spec:
     metadata:
       labels:
         app: laravel-example-project
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/path: /metrics
+        prometheus.io/port: "80"
     spec:
       volumes:
         - name: logs
@@ -71,10 +75,7 @@ spec:
               mountPath: /var/www/html/storage/framework/views
             - name: testing
               mountPath: /var/www/html/storage/framework/testing
-          resources:
-            limits:
-              cpu: 500m
-              memory: 50M
+          resources: {}
           image: laravel-example-project-fpm:latest
           ports:
             - containerPort: 9000
