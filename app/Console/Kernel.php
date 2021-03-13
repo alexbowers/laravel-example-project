@@ -25,7 +25,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->job(new SendHelloWorldEmail)->everyFiveMinutes();
+        $schedule->job(new SendHelloWorldEmail)->everyMinute();
     }
 
     /**
